@@ -26,5 +26,6 @@ module.exports = {
     'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
     'end-of-line': 'off',
     'no-unused-vars': 'warn',
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
 };
