@@ -1,8 +1,6 @@
 import { getToken } from 'next-auth/jwt';
 import { createUploadthing, type FileRouter as UtFileRouter } from 'uploadthing/next';
 
-import db from '~/lib/db';
-
 const f = createUploadthing();
 
 export const fileRouter = {
@@ -13,16 +11,8 @@ export const fileRouter = {
 
       return { userId: token.sub };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
-      await db.image.create({
-        data: {
-          userId: metadata.userId,
-          fileName: file.name,
-          fileSize: file.size,
-          fileKey: file.key,
-          fileUrl: file.url,
-        },
-      });
+    .onUploadComplete(async () => {
+      //
     }),
 } satisfies UtFileRouter;
 
