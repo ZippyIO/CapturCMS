@@ -1,7 +1,11 @@
-const Home = () => {
+import ImageForm from '~/components/ImageForm';
+
+const Dashboard = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">DAshboard</main>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <ImageForm />
+    </main>
   );
 };
 
-export default Home;
+export default Dashboard;
