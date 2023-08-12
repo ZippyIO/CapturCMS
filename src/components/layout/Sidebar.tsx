@@ -8,7 +8,7 @@ import SidebarLink from '~/components/layout/SidebarLink';
 const Sidebar = () => {
   const pathname = usePathname();
   return (
-    <div className="flex w-[250px] flex-shrink-0 flex-col gap-2 border-r pl-4 pt-4">
+    <div className="col-span-1 row-start-2 flex w-[250px] flex-shrink-0 flex-col gap-2 border-r pl-4 pt-4">
       <ul className="flex flex-col gap-2">
         <SidebarLink Icon={LayoutDashboard} href="/dashboard" pathname={pathname}>
           Dashboard
