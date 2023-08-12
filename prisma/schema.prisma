@@ -60,9 +60,12 @@ model Image {
   user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   collectionId String?
   collection   ImageCollection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
-  name         String
+  name         String?
   description  String?
-  url          String
+  fileName     String
+  fileSize     Int
+  fileKey      String           @unique
+  fileUrl      String
 }
 
 model ImageCollection {
