@@ -15,7 +15,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className="col-span-2 row-start-1 self-center border-b bg-black">
+    <header className="col-span-2 row-start-1 self-center border-b">
       <div className="mx-auto flex max-w-screen-xl items-center justify-between px-4 py-2">
         <div>
           <h1 className="text-xl font-bold text-red-500">
