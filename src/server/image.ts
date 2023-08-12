@@ -18,3 +18,17 @@ export async function getAllUserImages() {
     return images;
   }
 }
+
+export async function getImage(id: string) {
+  const session = await getServerSession(nextAuthOptions);
+
+  if (session) {
+    const image = await db.image.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    return image;
+  }
+}
