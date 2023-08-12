@@ -1,0 +1,40 @@
+import { getToken } from 'next-auth/jwt';
+import { type NextRequest } from 'next/server';
+import { z } from 'zod';
+
+import db from '~/lib/db';
+import { ImageCollectionValidator } from '~/lib/validators/image-collection';
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const token = await getToken({ req });
+
+    if (!token?.sub) {
+      return new Response('Unauthorized', { status: 401 });
+    }
+
+    const { userId, name, description } = ImageCollectionValidator.parse({
+      userId: token.sub,
+      ...body,
+    });
+
+    await db.imageCollection.create({
+      data: {
+        userId: userId,
+        name: name,
+        description: description,
+      },
+    });
+
+    return new Response('OK', { status: 200 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(error.message, { status: 400 });
+    }
+
+    return new Response('Could not create Image Collection, please try again later', {
+      status: 500,
+    });
+  }
+}
