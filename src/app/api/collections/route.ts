@@ -1,25 +1,17 @@
-import { getToken } from 'next-auth/jwt';
-import { NextResponse, type NextRequest } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from 'next/server';
+
 import db from '~/lib/db';
+import { coerceBoolean } from '~/lib/utils';
 
 export async function GET(req: NextRequest) {
   try {
-    const token = await getToken({ req });
-
-    if (!token?.sub) {
-      return new Response('Unauthorized', { status: 401 });
-    }
-
-    const userId = z.string().min(1).parse(token.sub);
+    const { searchParams } = new URL(req.url);
+    const complete = coerceBoolean.parse(searchParams.get('complete') ?? true);
 
     const collections = await db.imageCollection.findMany({
-      where: {
-        userId: userId,
-      },
       include: {
         images: {
-          take: 1,
+          take: complete ? undefined : 1,
         },
       },
     });
