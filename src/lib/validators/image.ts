@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const ImageValidator = z.object({
   userId: z.string().min(1),
-  collectionId: z.string().uuid().optional(),
+  collectionId: z.string().optional(),
   name: z.string().max(128).optional(),
   description: z.string().optional(),
   fileName: z.string(),
@@ -19,5 +19,5 @@ export const ImageUpdateValidator = z.object({
 });
 
 export type Image = z.infer<typeof ImageValidator>;
-export type CreateImagePayload = Omit<z.infer<typeof ImageValidator>, 'userId' | 'collectionId'>;
+export type CreateImagePayload = Omit<z.infer<typeof ImageValidator>, 'userId'>;
 export type UpdateImagePayload = z.infer<typeof ImageUpdateValidator>;

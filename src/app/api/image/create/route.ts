@@ -14,12 +14,13 @@ export async function POST(req: NextRequest) {
       return new Response('Unauthorized', { status: 401 });
     }
 
-    const { userId, name, description, fileName, fileSize, fileKey, fileUrl } =
+    const { userId, collectionId, name, description, fileName, fileSize, fileKey, fileUrl } =
       ImageValidator.parse({ userId: token.sub, ...body });
 
     await db.image.create({
       data: {
         userId: userId,
+        collectionId: collectionId,
         name: name,
         description: description,
         fileName: fileName,
