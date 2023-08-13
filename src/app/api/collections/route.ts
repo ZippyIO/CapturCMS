@@ -17,6 +17,11 @@ export async function GET(req: NextRequest) {
       where: {
         userId: userId,
       },
+      include: {
+        images: {
+          take: 1,
+        },
+      },
     });
 
     return NextResponse.json(collections, { status: 200 });
