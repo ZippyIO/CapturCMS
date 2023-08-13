@@ -25,9 +25,9 @@ export async function PATCH(req: NextRequest) {
         userId: userId,
       },
       data: {
-        name: name,
-        description: description,
-        collectionId: collectionId,
+        name: name ?? null,
+        description: description ?? null,
+        collectionId: collectionId ?? null,
       },
     });
 
