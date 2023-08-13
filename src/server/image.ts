@@ -13,6 +13,13 @@ export async function getAllUserImages() {
       where: {
         userId: session.user.id,
       },
+      include: {
+        collection: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
 
     return images;

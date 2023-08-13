@@ -9,7 +9,7 @@ const Image = async ({ params }: { params: { id: string } }) => {
   return (
     <main className="flex flex-col items-center justify-between p-8">
       <div className="relative">
-        {image && <img src={image.fileUrl} alt="" className="rounded-md" />}
+        {image && <img src={image.fileUrl} alt="" />}
         {image && collections && <ImageEditModal image={image} collections={collections} />}
       </div>
     </main>
