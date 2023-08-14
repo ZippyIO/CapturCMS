@@ -22,12 +22,6 @@ const Collections = async () => {
   const collections = await getCollections();
   return (
     <main className="flex flex-col items-center justify-between gap-2 p-8">
-      <div className="relative flex w-full flex-col items-center justify-center rounded-md bg-zinc-900/50 py-1.5">
-        <h2 className="text-2xl font-semibold text-zinc-300">Collections</h2>
-        <Button className="absolute right-4 h-8 bg-zinc-800/75 px-4 transition-transform hover:bg-zinc-800/60 active:scale-95">
-          New
-        </Button>
-      </div>
       <div className="columns-3 gap-2 space-y-2">
         {collections?.map((collection) => (
           <div
