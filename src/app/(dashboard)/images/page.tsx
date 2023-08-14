@@ -14,7 +14,7 @@ const Images = async () => {
           <div key={image.fileKey} className="relative">
             <img src={image.fileUrl} alt="" className="rounded-md" />
             <Button className="absolute right-4 top-4 bg-zinc-900/50 transition-transform hover:bg-zinc-950/50 active:scale-95">
-              <Link href={`/dashboard/images/${image.id}`} prefetch={false} className="">
+              <Link href={`/images/${image.id}`} prefetch={false} className="">
                 Open
               </Link>
             </Button>

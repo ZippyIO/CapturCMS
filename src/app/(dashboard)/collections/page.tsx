@@ -42,7 +42,7 @@ const Collections = async () => {
               />
             )}
             <Button className="absolute right-4 top-4 bg-zinc-900/50 transition-transform hover:bg-zinc-950/50 active:scale-95">
-              <Link href={`/dashboard/collection/${collection.id}`} prefetch={false} className="">
+              <Link href={`/collection/${collection.id}`} prefetch={false} className="">
                 Open
               </Link>
             </Button>

@@ -15,8 +15,9 @@ const Navbar = async () => {
           </h1>
         </div>
         <div className="flex gap-2">
-          <Link href="/">Home</Link>
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/" className="text-zinc-300 hover:text-zinc-400">
+            Dashboard
+          </Link>
         </div>
         <UserDropdown user={user} />
       </div>
