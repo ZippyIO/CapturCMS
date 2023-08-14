@@ -1,18 +1,10 @@
-'use client';
-
-import { type User } from '@prisma/client';
-
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
+import UserDropdown from '~/components/UserDropdown';
 import { getUser } from '~/server/user';
 
-const Navbar = () => {
-  const [user, setUser] = useState<User | undefined>(undefined);
-
-  useEffect(() => {
-    getUser().then((res) => setUser(res));
-  }, []);
+const Navbar = async () => {
+  const user = await getUser();
 
   return (
     <header className="col-span-2 row-start-1 self-center border-b">
@@ -26,7 +18,7 @@ const Navbar = () => {
           <Link href="/">Home</Link>
           <Link href="/dashboard">Dashboard</Link>
         </div>
-        <div>{user && <p>{user.name}</p>}</div>
+        <UserDropdown user={user} />
       </div>
     </header>
   );
