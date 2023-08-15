@@ -3,11 +3,11 @@ import { z } from 'zod';
 import { ImageValidator } from '~/lib/validators/image';
 
 export const ImageCollectionImageValidator = ImageValidator.extend({
-  id: z.string().optional(),
+  id: z.string().optional().nullable(),
   userId: z.string().optional().nullable(),
   collectionId: z.string().optional().nullable(),
   name: z.string().optional().nullable(),
-  description: z.string().nullable(),
+  description: z.string().optional().nullable(),
 });
 
 export const ImageCollectionValidator = z.object({
