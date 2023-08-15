@@ -1,5 +1,5 @@
 import { getToken } from 'next-auth/jwt';
-import { type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 import db from '~/lib/db';
@@ -14,20 +14,34 @@ export async function POST(req: NextRequest) {
       return new Response('Unauthorized', { status: 401 });
     }
 
-    const { userId, name, description } = ImageCollectionValidator.parse({
+    const { userId, name, description, images } = ImageCollectionValidator.parse({
       userId: token.sub,
       ...body,
     });
 
-    await db.imageCollection.create({
+    const collection = await db.imageCollection.create({
       data: {
         userId: userId,
         name: name,
         description: description,
+        images: {
+          connectOrCreate: images.map((id) => ({
+            where: { fileKey: id?.fileKey },
+            create: {
+              userId: userId,
+              name: id?.name,
+              description: id?.description,
+              fileName: id?.fileName,
+              fileSize: id?.fileSize,
+              fileKey: id?.fileKey,
+              fileUrl: id?.fileUrl,
+            },
+          })),
+        },
       },
     });
 
-    return new Response('OK', { status: 200 });
+    return NextResponse.json(collection, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 400 });
