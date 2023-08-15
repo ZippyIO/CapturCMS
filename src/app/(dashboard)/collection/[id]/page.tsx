@@ -1,25 +1,11 @@
-import { type Image, type ImageCollection as PrismaImageCollection } from '@prisma/client';
-
 import { Album } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '~/components/ui/Button';
-import { getBaseUrl } from '~/lib/utils';
-
-interface ImageCollection extends PrismaImageCollection {
-  images: Image[];
-}
-
-const getCollection = async (id: string) => {
-  const res = await fetch(`${getBaseUrl()}/api/collection?id=${id}&complete=true`, {
-    method: 'GET',
-  });
-
-  return res.json() as unknown as ImageCollection;
-};
+import { getImageCollection } from '~/server/image-collection';
 
 const Collection = async ({ params }: { params: { id: string } }) => {
-  const collection = await getCollection(params.id);
+  const collection = await getImageCollection(params.id, true);
 
   return (
     <main className="flex flex-col items-center justify-between gap-2 p-8">

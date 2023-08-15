@@ -20,3 +20,22 @@ export async function getAllImageCollections(allImages = true) {
     return collections;
   }
 }
+
+export async function getImageCollection(id: string, allImages = true) {
+  const session = await getServerSession(nextAuthOptions);
+
+  if (session) {
+    const collection = await db.imageCollection.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        images: {
+          take: allImages ? undefined : 1,
+        },
+      },
+    });
+
+    return collection;
+  }
+}
