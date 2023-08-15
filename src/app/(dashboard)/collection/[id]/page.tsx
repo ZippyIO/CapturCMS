@@ -1,7 +1,4 @@
-import { Album } from 'lucide-react';
-import Link from 'next/link';
-
-import { Button } from '~/components/ui/Button';
+import ImageCard from '~/components/shared/ImageCard';
 import { getImageCollection } from '~/server/image-collection';
 
 const Collection = async ({ params }: { params: { id: string } }) => {
@@ -15,25 +12,18 @@ const Collection = async ({ params }: { params: { id: string } }) => {
       </div>
       <div className="columns-3 gap-2 space-y-2">
         {collection?.images?.map((image) => (
-          <div key={image.fileKey} className="relative">
-            <img src={image.fileUrl} alt="" className="rounded-md" />
-            <Button className="absolute right-4 top-4 bg-zinc-900/50 transition-transform hover:bg-zinc-950/50 active:scale-95">
-              <Link href={`/images/${image.id}`} prefetch={false} className="">
-                Open
-              </Link>
-            </Button>
-            <div className="absolute bottom-0 flex w-full flex-col gap-0.5 rounded-b-md bg-zinc-900/70 py-1 pl-2">
-              <p className="text-sm font-medium">{image?.name}</p>
-              <p className="flex items-center gap-1 text-xs text-zinc-500">
-                <Album size={16} />
-                <span>{collection.name}</span>
-              </p>
-            </div>
-          </div>
+          <ImageCard
+            key={image.fileKey}
+            id={image.id}
+            href={image.fileUrl}
+            name={image.name ?? ''}
+            collectionName={collection.name}
+          />
         ))}
       </div>
     </main>
   );
 };
 
+export const dynamic = 'force-dynamic';
 export default Collection;
