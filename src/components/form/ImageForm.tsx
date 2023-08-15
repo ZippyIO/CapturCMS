@@ -11,7 +11,7 @@ import ReactCrop, { type Crop, type PixelCrop } from 'react-image-crop';
 import { type z } from 'zod';
 
 import { Button } from '~/components/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/Card';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/ui/Form';
 import { Input } from '~/components/ui/Input';
 import {

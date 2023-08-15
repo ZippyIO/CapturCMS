@@ -1,4 +1,4 @@
-import ImageEditModal from '~/components/ImageEditModal';
+import ImageEditModal from '~/components/form/ImageEditModal';
 import { getImage } from '~/server/image';
 import { getAllImageCollections } from '~/server/image-collection';
 

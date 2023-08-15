@@ -1,4 +1,4 @@
-import ImageForm from '~/components/ImageForm';
+import ImageForm from '~/components/form/ImageForm';
 import { getAllImageCollections } from '~/server/image-collection';
 
 const NewImage = async () => {
