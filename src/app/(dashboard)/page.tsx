@@ -1,8 +1,8 @@
 import ImageForm from '~/components/ImageForm';
-import { getAllUserImageCollections } from '~/server/image-collection';
+import { getAllImageCollections } from '~/server/image-collection';
 
 const Dashboard = async () => {
-  const collections = await getAllUserImageCollections();
+  const collections = await getAllImageCollections();
 
   return (
     <main className="flex flex-col items-center justify-between p-24">
