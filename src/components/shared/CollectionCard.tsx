@@ -18,7 +18,7 @@ const CollectionCard = ({ id, href, name }: Props) => {
     >
       {href && <img src={href} alt="" className="h-[500px] w-[300px] rounded-md object-cover" />}
       <Button className="absolute right-4 top-4 bg-zinc-900/50 transition-transform hover:bg-zinc-950/50 active:scale-95">
-        <Link href={`/collection/${id}`} prefetch={false} className="">
+        <Link href={`/collections/id/${id}`} prefetch={false} className="">
           Open
         </Link>
       </Button>
