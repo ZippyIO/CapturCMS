@@ -54,6 +54,12 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model App {
+  id     String  @id @default(cuid())
+  apiKey String  @unique
+  public Boolean
+}
+
 model Image {
   id           String           @id @default(cuid())
   userId       String
