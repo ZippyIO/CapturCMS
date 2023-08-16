@@ -27,3 +27,9 @@ export type ImageCollection = z.infer<typeof ImageCollectionValidator>;
 export type CreateImageCollectionPayload = Omit<z.infer<typeof ImageCollectionValidator>, 'userId'>;
 
 export type ImageCollectionUpdate = z.infer<typeof ImageCollectionUpdateValidator>;
+
+export type EditImageCollection = Pick<ImageCollection, 'name'>;
+export interface EditImageCollectionPayload extends EditImageCollection {
+  id: string;
+  description?: string | null;
+}

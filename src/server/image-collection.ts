@@ -120,3 +120,41 @@ export async function createImageCollection(data: {
     throw new Error('Could not create Image Collection, please try again later');
   }
 }
+
+export async function editImageCollection(data: {
+  id: string;
+  name: string;
+  description?: string | null;
+}) {
+  try {
+    const session = await getServerSession(nextAuthOptions);
+
+    if (!session) {
+      throw new Error('Unauthorized');
+    }
+
+    const { id, name, description } = ImageCollectionValidator.pick({
+      name: true,
+    })
+      .extend({ id: z.string().nonempty(), description: z.string().optional().nullable() })
+      .parse(data);
+
+    const collection = await db.imageCollection.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: name,
+        description: description,
+      },
+    });
+
+    return collection;
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw new Error(error.message);
+    }
+
+    throw new Error('Could not edit Image Collection, please try again later');
+  }
+}
