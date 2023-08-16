@@ -45,6 +45,26 @@ export async function getImageCollection(id: string, allImages = true) {
   }
 }
 
+export async function getAllImageCollectionNames() {
+  try {
+    const session = await getServerSession(nextAuthOptions);
+
+    if (!session) {
+      throw new Error('Unauthorized');
+    }
+
+    const collectionNames = await db.imageCollection.findMany({
+      select: {
+        name: true,
+      },
+    });
+
+    return collectionNames;
+  } catch (error) {
+    throw new Error('Could not get Image Collection names, please try again later');
+  }
+}
+
 export async function createImageCollection(data: {
   name: string;
   description?: string;
