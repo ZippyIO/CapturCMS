@@ -1,7 +1,7 @@
 import UserDropdown from '~/components/UserDropdown';
 import { getUser } from '~/server/user';
 
-const Navbar = async () => {
+const DashboardNavbar = async () => {
   const user = await getUser();
 
   return (
@@ -11,4 +11,4 @@ const Navbar = async () => {
   );
 };
 
-export default Navbar;
+export default DashboardNavbar;

@@ -12,7 +12,7 @@ import {
   AccordionTrigger,
 } from '~/components/ui/Accordion';
 
-const Sidebar = () => {
+const DashboardSidebar = () => {
   const pathname = usePathname();
 
   return (
@@ -68,4 +68,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default DashboardSidebar;
