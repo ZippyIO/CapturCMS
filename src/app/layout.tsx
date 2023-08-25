@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 
 import { Providers } from '~/components/Providers';
 import { cn } from '~/lib/utils';
+import { Toaster } from '~/components/ui/Toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className)}>
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );
