@@ -13,6 +13,10 @@ export function getBaseUrl() {
   return 'http://localhost:3000';
 }
 
+export function stringToId(str: string): string {
+  return str.trim().toLowerCase().replace(/\s+/g, '-');
+}
+
 export const coerceBoolean = z
   .enum(['0', '1', 'true', 'false'])
   .catch('false')

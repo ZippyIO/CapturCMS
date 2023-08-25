@@ -7,6 +7,7 @@ import { z } from 'zod';
 
 import { nextAuthOptions } from '~/lib/auth';
 import db from '~/lib/db';
+import { stringToId } from '~/lib/utils';
 import {
   type ImageCollectionImage,
   ImageCollectionValidator,
@@ -35,6 +36,7 @@ export async function createImageCollection(data: {
 
     const collection = await db.imageCollection.create({
       data: {
+        id: stringToId(name),
         userId: userId,
         name: name,
         description: description,
