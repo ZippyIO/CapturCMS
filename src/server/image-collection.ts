@@ -158,3 +158,19 @@ export async function editImageCollection(data: {
     throw new Error('Could not edit Image Collection, please try again later');
   }
 }
+
+export async function getImageCollectionCount() {
+  try {
+    const session = await getServerSession(nextAuthOptions);
+
+    if (!session) {
+      throw new Error('Unauthorized');
+    }
+
+    const collectionCount = await db.imageCollection.count();
+
+    return collectionCount;
+  } catch (error) {
+    throw new Error('Could not get Image Collection count, please try again later');
+  }
+}

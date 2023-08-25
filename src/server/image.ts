@@ -75,3 +75,39 @@ export async function createImage(data: Omit<Image, 'userId'>) {
     throw new Error('Could not create Image, please try again later');
   }
 }
+
+export async function getImageCount() {
+  try {
+    const session = await getServerSession(nextAuthOptions);
+
+    if (!session) {
+      throw new Error('Unauthorized');
+    }
+
+    const image = await db.image.count();
+
+    return image;
+  } catch (error) {
+    throw new Error('Could not get Image count, please try again later');
+  }
+}
+
+export async function getImagesTotalSize() {
+  try {
+    const session = await getServerSession(nextAuthOptions);
+
+    if (!session) {
+      throw new Error('Unauthorized');
+    }
+
+    const image = await db.image.aggregate({
+      _sum: {
+        fileSize: true,
+      },
+    });
+
+    return image._sum.fileSize;
+  } catch (error) {
+    throw new Error('Could not get Image total size, please try again later');
+  }
+}
