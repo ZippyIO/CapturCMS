@@ -17,7 +17,7 @@ const ImageCard = ({ id, href, name, collectionName }: Props) => {
     <div className="relative">
       <img src={href} alt="" className="rounded-md" />
       <Button className="absolute right-4 top-4 bg-zinc-900/50 transition-transform hover:bg-zinc-950/50 active:scale-95">
-        <Link href={`/images/${id}`} prefetch={false} className="">
+        <Link href={`/dashboard/images/id/${id}`} prefetch={false} className="">
           Open
         </Link>
       </Button>

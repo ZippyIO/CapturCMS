@@ -23,7 +23,7 @@ const Sidebar = () => {
         </h1>
       </div>
       <ul className="flex flex-col gap-1">
-        <SidebarLink Icon={LayoutDashboard} href="/" pathname={pathname}>
+        <SidebarLink Icon={LayoutDashboard} href="/dashboard" pathname={pathname}>
           Dashboard
         </SidebarLink>
         <Accordion type="multiple" className="flex flex-col gap-1">
@@ -34,10 +34,10 @@ const Sidebar = () => {
             </AccordionTrigger>
             <AccordionContent asChild>
               <ul className="flex flex-col gap-1 pt-1">
-                <SidebarLink href="/collections" pathname={pathname} className="pl-7">
+                <SidebarLink href="/dashboard/collections" pathname={pathname} className="pl-7">
                   All
                 </SidebarLink>
-                <SidebarLink href="/collections/new" pathname={pathname} className="pl-7">
+                <SidebarLink href="/dashboard/collections/new" pathname={pathname} className="pl-7">
                   New
                 </SidebarLink>
               </ul>
@@ -50,17 +50,17 @@ const Sidebar = () => {
             </AccordionTrigger>
             <AccordionContent asChild>
               <ul className="flex flex-col gap-1 pt-1">
-                <SidebarLink href="/images" pathname={pathname} className="pl-7">
+                <SidebarLink href="/dashboard/images" pathname={pathname} className="pl-7">
                   All
                 </SidebarLink>
-                <SidebarLink href="/images/new" pathname={pathname} className="pl-7">
+                <SidebarLink href="/dashboard/images/new" pathname={pathname} className="pl-7">
                   New
                 </SidebarLink>
               </ul>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <SidebarLink Icon={Wrench} href="/settings" pathname={pathname}>
+        <SidebarLink Icon={Wrench} href="/dashboard/settings" pathname={pathname}>
           Settings
         </SidebarLink>
       </ul>

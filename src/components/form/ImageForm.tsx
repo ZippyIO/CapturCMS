@@ -86,7 +86,7 @@ const ImageForm = ({ collections }: Props) => {
   async function onSubmit(values: FormValues) {
     if (!imgFile) return;
 
-    const image = await uploadImage().then(async (res) => {
+    await uploadImage().then(async (res) => {
       const file = res?.[0];
       if (!file) return;
 
@@ -100,12 +100,8 @@ const ImageForm = ({ collections }: Props) => {
         fileUrl: file.url,
       };
 
-      const image = await createImage(payload);
-
-      return image;
+      await createImage(payload);
     });
-
-    return image;
   }
 
   return (

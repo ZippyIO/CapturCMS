@@ -110,7 +110,7 @@ const ImageCollectionForm = ({ images }: Props) => {
 
       return createCollection;
     } else if (imageTab === 'new' && imgFile) {
-      const collectionNewImage = await uploadImage().then(async (res) => {
+      await uploadImage().then(async (res) => {
         const file = res?.[0];
         if (!file) return;
 
@@ -130,12 +130,8 @@ const ImageCollectionForm = ({ images }: Props) => {
           ],
         };
 
-        const createCollection = await createImageCollection(payload);
-
-        return createCollection;
+        await createImageCollection(payload);
       });
-
-      return collectionNewImage;
     }
   };
 
