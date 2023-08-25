@@ -7,7 +7,12 @@ import { z } from 'zod';
 
 import { nextAuthOptions } from '~/lib/auth';
 import db from '~/lib/db';
-import { type Image, ImageValidator } from '~/lib/validators/image';
+import {
+  type Image,
+  ImageUpdateValidator,
+  ImageValidator,
+  type UpdateImagePayload,
+} from '~/lib/validators/image';
 
 export async function createImage(data: Omit<Image, 'userId'>) {
   let imageId: string | undefined;
@@ -47,6 +52,45 @@ export async function createImage(data: Omit<Image, 'userId'>) {
     if (success && imageId) {
       revalidatePath('/dashboard/images');
       redirect(`/dashboard/images/id/${imageId}`);
+    }
+  }
+}
+
+export async function updateImage(data: UpdateImagePayload) {
+  let success = false;
+  try {
+    const session = await getServerSession(nextAuthOptions);
+
+    if (!session) {
+      throw new Error('Unauthorized');
+    }
+
+    const { id, userId, name, description, collectionId } = ImageUpdateValidator.extend({
+      userId: z.string().nonempty(),
+    }).parse({ ...data, userId: session.user.id });
+
+    await db.image.update({
+      where: {
+        id: id,
+        userId: userId,
+      },
+      data: {
+        name: name ?? null,
+        description: description ?? null,
+        collectionId: collectionId ?? null,
+      },
+    });
+
+    success = true;
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw new Error(error.message);
+    }
+
+    throw new Error('Could not update Image, please try again later');
+  } finally {
+    if (success) {
+      revalidatePath(`/dashboard/images/id${data.id}`);
     }
   }
 }

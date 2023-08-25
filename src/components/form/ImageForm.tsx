@@ -26,6 +26,7 @@ import useUploadThing from '~/hooks/useUploadThing';
 import { cropImage } from '~/lib/image';
 import { type CreateImagePayload, ImageValidator } from '~/lib/validators/image';
 import { createImage } from '~/server/image';
+import { useToast } from '~/hooks/use-toast';
 
 const FormSchema = ImageValidator.pick({ name: true, description: true, collectionId: true });
 
@@ -36,6 +37,13 @@ interface Props {
 }
 
 const ImageForm = ({ collections }: Props) => {
+  const [imgFile, setImgFile] = useState<File | undefined>(undefined);
+  const [imgSrc, setImgSrc] = useState<string | undefined>(undefined);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  const [crop, setCrop] = useState<Crop>();
+  const [storedCrop, setStoredCrop] = useState<PixelCrop>();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -45,23 +53,20 @@ const ImageForm = ({ collections }: Props) => {
     },
   });
 
+  const { toast } = useToast();
+  const [uploadingText, setUploadingText] = useState('Uploading Image');
   const { isUploading, startUpload } = useUploadThing('imageUploader', {
     onClientUploadComplete(res) {
       console.log('Client upload complete', res);
     },
-    onUploadProgress(e) {
-      console.log('Upload progress', e);
+    onUploadProgress(percent) {
+      setUploadingText(`Uploading Image - ${percent}%`);
+      console.log('Upload progress', percent, '%');
     },
-    onUploadError(e) {
-      console.log('Upload error', e);
+    onUploadError(error) {
+      console.log('Upload error', error);
     },
   });
-
-  const [imgFile, setImgFile] = useState<File | undefined>(undefined);
-  const [imgSrc, setImgSrc] = useState<string | undefined>(undefined);
-  const [crop, setCrop] = useState<Crop>();
-  const [storedCrop, setStoredCrop] = useState<PixelCrop>();
-  const imageRef = useRef<HTMLImageElement>(null);
 
   async function uploadImage() {
     if (!imageRef.current || !imgFile) return;
@@ -85,6 +90,10 @@ const ImageForm = ({ collections }: Props) => {
 
   async function onSubmit(values: FormValues) {
     if (!imgFile) return;
+    toast({
+      title: 'Creating Image - Uploading Image',
+      description: 'Please wait while your image is uploaded',
+    });
 
     await uploadImage().then(async (res) => {
       const file = res?.[0];
@@ -100,7 +109,17 @@ const ImageForm = ({ collections }: Props) => {
         fileUrl: file.url,
       };
 
-      await createImage(payload);
+      toast({
+        title: 'Creating Image',
+        description: 'Please wait while your image is created',
+      });
+
+      await createImage(payload).then(() => {
+        toast({
+          title: `${values.name} Image Created`,
+          description: 'Your image has been created',
+        });
+      });
     });
   }
 
@@ -189,7 +208,7 @@ const ImageForm = ({ collections }: Props) => {
                 </ReactCrop>
               )}
             </div>
-            <Button type="submit">{isUploading ? 'Uploading...' : 'Submit'}</Button>
+            <Button type="submit">{isUploading ? uploadingText : 'Submit'}</Button>
           </form>
         </Form>
       </CardContent>

@@ -21,6 +21,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/
 import { Input } from '~/components/ui/Input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/Tabs';
 import { Textarea } from '~/components/ui/Textarea';
+import { useToast } from '~/hooks/use-toast';
 import useUploadThing from '~/hooks/useUploadThing';
 import { cropImage } from '~/lib/image';
 import {
@@ -42,16 +43,14 @@ interface Props {
 const ImageCollectionForm = ({ images }: Props) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [imageTab, setImageTab] = useState('existing');
-  const [isCreating, setIsCreating] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
-
   const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [imgSrc, setImgSrc] = useState<string | undefined>(undefined);
+  const imageRef = useRef<HTMLImageElement>(null);
+
   const [crop, setCrop] = useState<Crop>();
   const [storedCrop, setStoredCrop] = useState<PixelCrop>();
-
-  const imageRef = useRef<HTMLImageElement>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -63,15 +62,19 @@ const ImageCollectionForm = ({ images }: Props) => {
     },
   });
 
+  const { toast } = useToast();
+  const [isCreating, setIsCreating] = useState(false);
+  const [uploadingText, setUploadingText] = useState('Uploading Image');
   const { isUploading, startUpload } = useUploadThing('imageUploader', {
     onClientUploadComplete(res) {
       console.log('Client upload complete', res);
     },
-    onUploadProgress(e) {
-      console.log('Upload progress', e);
+    onUploadProgress(percent) {
+      setUploadingText(`Uploading Image - ${percent}%`);
+      console.log('Upload progress', percent, '%');
     },
-    onUploadError(e) {
-      console.log('Upload error', e);
+    onUploadError(error) {
+      console.log('Upload error', error);
     },
   });
 
@@ -97,19 +100,29 @@ const ImageCollectionForm = ({ images }: Props) => {
 
   const onSubmit = async (values: FormValues) => {
     if (imageTab === 'existing' && selectedImage) {
-      setIsCreating(true);
       const payload: CreateImageCollectionPayload = {
         name: values.name,
         description: values.description?.length ?? 0 > 0 ? values.description : undefined,
         images: [selectedImage],
       };
 
-      const createCollection = await createImageCollection(payload)
-        .then(() => setIsCreating(false))
-        .catch(() => setIsCreating(false));
+      setIsCreating(true);
+      toast({
+        title: 'Creating Collection',
+        description: 'Please wait while your collection is created',
+      });
 
+      const createCollection = await createImageCollection(payload).then(() => {
+        setIsCreating(false);
+        form.reset();
+      });
       return createCollection;
     } else if (imageTab === 'new' && imgFile) {
+      toast({
+        title: 'Creating Collection - Uploading Image',
+        description: 'Please wait while your image is uploaded',
+      });
+
       await uploadImage().then(async (res) => {
         const file = res?.[0];
         if (!file) return;
@@ -130,7 +143,21 @@ const ImageCollectionForm = ({ images }: Props) => {
           ],
         };
 
-        await createImageCollection(payload);
+        setIsCreating(true);
+        toast({
+          title: `Creating Collection`,
+          description: 'Please wait while your collection is created',
+        });
+
+        await createImageCollection(payload).then(() => {
+          toast({
+            title: `${values.name} Collection Created`,
+            description: 'Your collection has been created',
+          });
+
+          setIsCreating(false);
+          form.reset();
+        });
       });
     }
   };
@@ -281,7 +308,9 @@ const ImageCollectionForm = ({ images }: Props) => {
             </div>
           </TabsContent>
         </Tabs>
-        <Button type="submit">{isCreating || isUploading ? 'Creating' : 'Submit'}</Button>
+        <Button type="submit">
+          {isUploading ? uploadingText : isCreating ? 'Creating Collection' : 'Submit'}
+        </Button>
       </form>
     </Form>
   );

@@ -26,7 +26,9 @@ import {
   SelectValue,
 } from '~/components/ui/Select';
 import { Textarea } from '~/components/ui/Textarea';
+import { useToast } from '~/hooks/use-toast';
 import { type UpdateImagePayload } from '~/lib/validators/image';
+import { updateImage } from '~/server/image';
 
 const FormSchema = z.object({
   name: z.string().optional(),
@@ -44,6 +46,7 @@ interface Props {
 const ImageEditModal = ({ image, collections }: Props) => {
   const [open, setOpen] = useState(false);
 
+  const { toast } = useToast();
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -61,13 +64,18 @@ const ImageEditModal = ({ image, collections }: Props) => {
       collectionId: values.collectionId,
     };
 
-    await fetch('/api/image/update', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    }).then(() => setOpen(false));
+    toast({
+      title: 'Updating Image',
+      description: 'Please wait while your image is updated',
+    });
+
+    await updateImage(payload).then(() => {
+      toast({
+        title: 'Image Updated',
+        description: 'Your image has been updated',
+      });
+      setOpen(false);
+    });
   };
 
   return (
