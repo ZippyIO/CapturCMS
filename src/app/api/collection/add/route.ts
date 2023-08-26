@@ -5,7 +5,7 @@ import { z } from 'zod';
 import db from '~/lib/db';
 import { ImageCollectionUpdateValidator } from '~/lib/validators/image-collection';
 
-export async function UPDATE(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const token = await getToken({ req });
