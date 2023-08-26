@@ -18,7 +18,6 @@ const CollectionsNavbar = ({ collections }: Props) => {
         <Link
           key={collection.id}
           href={`/collections/${collection.id}`}
-          prefetch={false}
           className={cn(
             pathname === `/collections/${collection.id}` ? 'text-blue-500' : 'text-zinc-300',
             'uppercase',
