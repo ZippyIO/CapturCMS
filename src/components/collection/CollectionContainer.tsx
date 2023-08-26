@@ -8,7 +8,7 @@ import CollectionEditModal from '~/components/collection/CollectionEditModal';
 import ImageCard from '~/components/shared/ImageCard';
 import { Input } from '~/components/ui/Input';
 
-interface Collection extends ImageCollection {
+interface Collection extends Omit<ImageCollection, 'userId'> {
   images: Image[];
 }
 

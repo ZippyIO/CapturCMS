@@ -117,11 +117,12 @@ export async function editImageCollection(data: {
 }
 
 export async function getAllImageCollections(allImages = true) {
-  const session = await getServerSession(nextAuthOptions);
-
-  if (session) {
+  try {
     const collections = await db.imageCollection.findMany({
-      include: {
+      select: {
+        id: true,
+        name: true,
+        description: true,
         images: {
           take: allImages ? undefined : 1,
         },
@@ -129,18 +130,21 @@ export async function getAllImageCollections(allImages = true) {
     });
 
     return collections;
+  } catch (error) {
+    throw new Error('Could not get Image Collections, please try again later');
   }
 }
 
 export async function getImageCollection(id: string, allImages = true) {
-  const session = await getServerSession(nextAuthOptions);
-
-  if (session) {
+  try {
     const collection = await db.imageCollection.findUnique({
       where: {
         id: id,
       },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        description: true,
         images: {
           take: allImages ? undefined : 1,
         },
@@ -148,17 +152,13 @@ export async function getImageCollection(id: string, allImages = true) {
     });
 
     return collection;
+  } catch (error) {
+    throw new Error('Could not get Image Collection, please try again later');
   }
 }
 
 export async function getAllImageCollectionNames() {
   try {
-    const session = await getServerSession(nextAuthOptions);
-
-    if (!session) {
-      throw new Error('Unauthorized');
-    }
-
     const collectionNames = await db.imageCollection.findMany({
       select: {
         name: true,
@@ -168,6 +168,20 @@ export async function getAllImageCollectionNames() {
     return collectionNames;
   } catch (error) {
     throw new Error('Could not get Image Collection names, please try again later');
+  }
+}
+
+export async function getAllImageCollectionIds() {
+  try {
+    const collectionIds = await db.imageCollection.findMany({
+      select: {
+        id: true,
+      },
+    });
+
+    return collectionIds;
+  } catch (error) {
+    throw new Error('Could not get Image Collection ids, please try again later');
   }
 }
 

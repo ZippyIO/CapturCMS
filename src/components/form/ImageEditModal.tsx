@@ -40,7 +40,7 @@ type FormValues = z.infer<typeof FormSchema>;
 
 interface Props {
   image: Image;
-  collections: ImageCollection[];
+  collections: Omit<ImageCollection, 'userId'>[];
 }
 
 const ImageEditModal = ({ image, collections }: Props) => {

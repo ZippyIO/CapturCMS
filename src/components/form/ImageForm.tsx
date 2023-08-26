@@ -33,7 +33,7 @@ const FormSchema = ImageValidator.pick({ name: true, description: true, collecti
 type FormValues = z.infer<typeof FormSchema>;
 
 interface Props {
-  collections: ImageCollection[];
+  collections: Omit<ImageCollection, 'userId'>[];
 }
 
 const ImageForm = ({ collections }: Props) => {

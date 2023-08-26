@@ -1,7 +1,21 @@
-const Home = () => {
+import CollectionCard from '~/components/portfolio/CollectionCard';
+import { getAllImageCollections } from '~/server/image-collection';
+
+const Home = async () => {
+  const collections = await getAllImageCollections(false);
+
   return (
-    <main className="flex flex-col items-center justify-between p-24">
-      <div className="bg rounded-md bg-zinc-900/50 p-2 text-center"></div>
+    <main className="flex flex-col items-center justify-center gap-2 p-8">
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        {collections?.map((collection) => (
+          <CollectionCard
+            key={collection.id}
+            id={collection.id}
+            href={collection.images[0]?.fileUrl}
+            name={collection.name}
+          />
+        ))}
+      </div>
     </main>
   );
 };
